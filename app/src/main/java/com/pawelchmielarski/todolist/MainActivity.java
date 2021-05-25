@@ -1,5 +1,6 @@
 package com.pawelchmielarski.todolist;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -12,8 +13,17 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ArrayList<Task> tasks;
+    private ArrayAdapter<Task> tasksAdapter;
+    private ListView lvTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +36,22 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                Intent intent = new Intent(getApplicationContext(), TaskDetailsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
         });
+
+        tasks = new ArrayList<Task>();
+        tasksAdapter = new ArrayAdapter<Task>(this, android.R.layout.simple_list_item_1, tasks); // dodać custom list item (custom adapter)
+        lvTasks = (ListView) findViewById(R.id.tasksList);
+        lvTasks.setAdapter(tasksAdapter);
+
+        createItems();
+
     }
 
     @Override
@@ -52,5 +74,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void createItems() {
+        tasks.add(new Task("task1", "descr1",null, null, Priority.HIGH, null )); // new Date(System.currentTimeMillis() + 100000)
+        tasks.add(new Task("task2", "descr2",null, null, Priority.HIGH, null ));
+        tasks.add(new Task("task3", "descr3",null, null, Priority.HIGH, null ));
+        tasks.add(new Task("task4", "descr4",null, null, Priority.HIGH, null ));
     }
 }
