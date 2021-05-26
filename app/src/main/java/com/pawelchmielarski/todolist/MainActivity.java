@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,7 +21,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Task> tasks;
-    private ArrayAdapter<Task> tasksAdapter;
+    private TaskAdapter tasksAdapter;
     private ListView lvTasks;
 
     @Override
@@ -46,11 +45,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tasks = new ArrayList<Task>();
-        tasksAdapter = new ArrayAdapter<Task>(this, android.R.layout.simple_list_item_1, tasks); // dodać custom list item (custom adapter)
+        createItems();
+        tasksAdapter = new TaskAdapter(this, tasks); // dodać custom list item (custom adapter)
         lvTasks = (ListView) findViewById(R.id.tasksList);
         lvTasks.setAdapter(tasksAdapter);
-
-        createItems();
 
     }
 
@@ -77,9 +75,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createItems() {
-        tasks.add(new Task("task1", "descr1",null, null, Priority.HIGH, null )); // new Date(System.currentTimeMillis() + 100000)
-        tasks.add(new Task("task2", "descr2",null, null, Priority.HIGH, null ));
-        tasks.add(new Task("task3", "descr3",null, null, Priority.HIGH, null ));
-        tasks.add(new Task("task4", "descr4",null, null, Priority.HIGH, null ));
+        tasks.add(new Task("task1", "descr1",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task2", "descr2",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task3", "descr3",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task4", "descr4",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task1", "descr1",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task2", "descr2",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task3", "descr3",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task4", "descr4",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task1", "descr1",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task2", "descr2",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task3", "descr3",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task4", "descr4",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task1", "descr1",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task2", "descr2",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task3", "descr3",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task4", "descr4",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task1", "descr1",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task2", "descr2",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task3", "descr3",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        tasks.add(new Task("task4", "descr4",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
     }
 }
