@@ -1,5 +1,6 @@
 package com.pawelchmielarski.todolist;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,8 +13,11 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,8 +25,9 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Task> tasks;
-    private TaskAdapter tasksAdapter;
+//    private TaskAdapter tasksAdapter;
     private ListView lvTasks;
+    private TaskAdapter taskAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +49,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        tasks = new ArrayList<Task>();
-        createItems();
-        tasksAdapter = new TaskAdapter(this, tasks); // dodać custom list item (custom adapter)
-        lvTasks = (ListView) findViewById(R.id.tasksList);
-        lvTasks.setAdapter(tasksAdapter);
+//        tasks = new ArrayList<Task>();
+//        createItems();
+//        tasksAdapter = new TaskAdapter(this, tasks);
 
+        lvTasks = (ListView) findViewById(R.id.tasksList);
+
+        taskAdapter = new TaskAdapter(this);
+        lvTasks.setAdapter(taskAdapter);
+
+//        lvTasks.setOnItemClickListener(new OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> arg0, View v, int pos,
+//                                    long id) {
+//                // TODO Auto-generated method stub
+//
+//                Task item = taskAdapter.getItem(pos);
+//                Toast.makeText(getApplicationContext(), "kliknięto task o pozycji: " + pos, Toast.LENGTH_LONG).show();
+//
+//                Intent i = new Intent(getApplicationContext(), TaskDetailsActivity.class);
+//
+//                //PASS INDEX OR POS
+//                i.putExtra("Position", pos);
+//                startActivity(i);
+//
+//            }
+//        });
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        taskAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -75,25 +108,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createItems() {
-        tasks.add(new Task("task1", "descr1",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task2", "descr2",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task3", "descr3",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task4", "descr4",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task1", "descr1",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task2", "descr2",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task3", "descr3",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task4", "descr4",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task1", "descr1",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task2", "descr2",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task3", "descr3",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task4", "descr4",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task1", "descr1",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task2", "descr2",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task3", "descr3",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task4", "descr4",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task1", "descr1",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task2", "descr2",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task3", "descr3",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        tasks.add(new Task("task4", "descr4",new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        for (int i = 0; i < 20; i++) {
+            tasks.add(new Task("task" + i, "descr" + i, false, new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
+        }
     }
 }

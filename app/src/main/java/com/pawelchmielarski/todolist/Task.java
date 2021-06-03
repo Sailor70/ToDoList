@@ -6,14 +6,19 @@ public class Task {
 
     private String name;
     private String description;
+    private boolean done;
     private Date createdAt;
     private Date deadline;
     private Priority priority;
     private String[] attachments;
 
-    public Task(String name, String description, Date createdAt, Date deadline, Priority priority, String[] attachments) {
+    public Task() {
+    }
+
+    public Task(String name, String description, boolean done, Date createdAt, Date deadline, Priority priority, String[] attachments) {
         this.name = name;
         this.description = description;
+        this.done = done;
         this.createdAt = createdAt;
         this.deadline = deadline;
         this.priority = priority;
@@ -34,6 +39,14 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 
     public Date getCreatedAt() {

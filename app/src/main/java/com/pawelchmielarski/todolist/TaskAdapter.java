@@ -1,64 +1,92 @@
 package com.pawelchmielarski.todolist;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class TaskAdapter extends ArrayAdapter<Task> {
+public class TaskAdapter extends BaseAdapter { // implements View.OnClickListener ?
 
     Context context;
-    public TaskAdapter(Context context, ArrayList<Task> tasks) {
+    ArrayList<Task> tasks;
 
-        super(context, 0, tasks);
-        this.context = context;
+    // może ten adapter zrobić singletonem i wywalić serwis?
+    public TaskAdapter(Context ctx) {
+        this.context = ctx;
+        this.tasks = TasksService.getInstance().getTasks();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public int getCount() {
+        return tasks.size();
+    }
 
-        // Get the data item for this position
-        Task task = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
+    @Override
+    public Task getItem(int position) {
+        return tasks.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int pos, View convertView, ViewGroup parent) {
+
+        Task task = getItem(pos);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.task_list_item, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.task_list_item, parent, false);
         }
+
         // Lookup view for data population
         TextView tvName = (TextView) convertView.findViewById(R.id.tvName);
         TextView tvDeadline = (TextView) convertView.findViewById(R.id.tvDeadline);
+        CheckBox checkBoxDone = (CheckBox) convertView.findViewById(R.id.checkBoxDone);
+        ImageView btnDelete = (ImageView) convertView.findViewById(R.id.ivDelete);
         // Populate the data into the template view using the data object
-        tvName.setText(task.getName());
-        tvDeadline.setText(task.getDeadline().toString());
+        tvName.setText(tasks.get(pos).getName());
+        tvDeadline.setText(tasks.get(pos).getDeadline().toString());
+        checkBoxDone.setChecked(tasks.get(pos).isDone());
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-
+        // Click events
+        checkBoxDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                if(view.)  // reakcje na klikanie poszczególnych elementów itemu na liście (
-
-                Intent i=new Intent(context, TaskDetailsActivity.class);
-
-//                i.putExtra(task);
-                context.startActivity(i);
-
-                Toast.makeText(context, "kliknięto task o pozycji: " + task.getName(), Toast.LENGTH_LONG).show();
-//                User user = getItem(position);
-
-                // Do what you want here...
-
+                task.setDone(!task.isDone());
+                Toast.makeText(context, "task done " + task.isDone(), Toast.LENGTH_LONG).show();
+                TasksService.getInstance().setTaskDone(pos, task.isDone());
             }
-
         });
-        // Return the completed view to render on screen
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tasks.remove(task);
+                TasksService.getInstance().setTasks(tasks);
+                notifyDataSetChanged();
+            }
+        });
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "kliknięto task o pozycji: " + pos, Toast.LENGTH_LONG).show();
+                Intent i = new Intent(context, TaskDetailsActivity.class);
+                //PASS INDEX OR POS
+                i.putExtra("Position", pos);
+                context.startActivity(i);
+            }
+        });
 
         return convertView;
     }
