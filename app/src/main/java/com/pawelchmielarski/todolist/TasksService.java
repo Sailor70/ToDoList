@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 
 public class TasksService {
@@ -109,6 +110,34 @@ public class TasksService {
                 Log.e("login activity", "Can not read file: " + e.toString());
             }
         }
+    }
 
+    public void sortTasksByName() {
+        Comparator<Task> compareByName = (Task t1, Task t2) ->
+                t1.getName().compareTo(t2.getName());
+        tasks.sort(compareByName);
+    }
+
+    // po dacie utworzenia ? bo ona zawsze ma wartość a deadline może być pusty
+    public void sortTasksByDeadline() {
+        Comparator<Task> compareByDeadline = (Task t1, Task t2) ->
+                t1.getDeadline().compareTo(t2.getDeadline());
+        tasks.sort(compareByDeadline);
+    }
+
+    public void sortTasksByDone() {
+        Comparator<Task> compareByDone =
+                Comparator.comparing(Task::isDone, Boolean::compare);
+//                Comparator.comparing(Task::isDone, Boolean::compare).reversed(); // najpierw zrobione
+        tasks.sort(compareByDone);
+    }
+
+    public void sortTasksByPriority() {
+//        Comparator<Task> compareByDeadline = (Task t1, Task t2) ->
+//                t1.getDeadline().compareTo(t2.getDeadline());
+//        Comparator<Task> compareByPriority = Comparator.comparing(Task::getPriority, Priority::ordinal);
+//        tasks.sort(compareByPriority);
+
+//        Priority.values();
     }
 }

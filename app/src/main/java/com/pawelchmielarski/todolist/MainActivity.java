@@ -31,7 +31,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Task> tasks;
-//    private TaskAdapter tasksAdapter;
+    //    private TaskAdapter tasksAdapter;
     private ListView lvTasks;
     private TaskAdapter taskAdapter;
     private static final int STORAGE_PERMISSION_CODE = 67;
@@ -63,18 +63,20 @@ public class MainActivity extends AppCompatActivity {
         lvTasks.setAdapter(taskAdapter);
 
         TasksService.getInstance().readTasksFromFile(this);
+        TasksService.getInstance().sortTasksByDone();
         taskAdapter.notifyDataSetChanged();
 
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
+        TasksService.getInstance().sortTasksByDone();
         taskAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         TasksService.getInstance().writeTasksToFile(this);
         taskAdapter.notifyDataSetChanged();
@@ -94,22 +96,30 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if(id == R.id.action_export_tasks) {
+        if (id == R.id.action_export_tasks) {
             TasksService.getInstance().writeTasksToFile(this);
             taskAdapter.notifyDataSetChanged();
-        } else if(id == R.id.action_import_tasks) {
+        } else if (id == R.id.action_import_tasks) {
             TasksService.getInstance().readTasksFromFile(this);
+            taskAdapter.notifyDataSetChanged();
+        } else if (id == R.id.action_sort_name) {
+            TasksService.getInstance().sortTasksByName();
+            taskAdapter.notifyDataSetChanged();
+        } else if (id == R.id.action_sort_deadline) {
+            TasksService.getInstance().sortTasksByDeadline();
+            taskAdapter.notifyDataSetChanged();
+        } else if (id == R.id.action_sort_done) {
+            TasksService.getInstance().sortTasksByDone();
+            taskAdapter.notifyDataSetChanged();
+        } else if (id == R.id.action_sort_priority) {
+            TasksService.getInstance().sortTasksByPriority();
             taskAdapter.notifyDataSetChanged();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void checkPermission(String permission, int requestCode)
-    {
+    public void checkPermission(String permission, int requestCode) {
         if (ContextCompat.checkSelfPermission(
                 MainActivity.this,
                 permission)
@@ -117,10 +127,9 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat
                     .requestPermissions(
                             MainActivity.this,
-                            new String[] { permission },
+                            new String[]{permission},
                             requestCode);
-        }
-        else {
+        } else {
             // jakaś akcja
             Log.i("Permissions:  ", " already granted");
         }
@@ -129,8 +138,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
-                                           @NonNull int[] grantResults)
-    {
+                                           @NonNull int[] grantResults) {
         super
                 .onRequestPermissionsResult(requestCode,
                         permissions,
@@ -144,8 +152,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT)
                         .show();
                 // jakaś akcja
-            }
-            else {
+            } else {
                 Toast.makeText(MainActivity.this,
                         "Storage Permission Denied",
                         Toast.LENGTH_SHORT)

@@ -150,7 +150,7 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
     private void inputsToTask()  {
         task.setName(etTaskName.getText().toString());
         task.setDescription(etTaskDescription.getText().toString());
-        if (etTaskDescription.getText().length() > 0) {
+        if (etTaskDeadline.getText().length() > 0) {
             try {
                 task.setDeadline(sdf.parse(etTaskDeadline.getText().toString()));
             } catch (ParseException e) {
@@ -218,13 +218,6 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String selected = parent.getItemAtPosition(position).toString();
         task.setPriority(priorities.get(position));
-//        if(position == 0) {
-//            task.setPriority(Priority.LOW);
-//        } else if(position == 1) {
-//            task.setPriority(Priority.MEDIUM);
-//        } else {
-//            task.setPriority(Priority.HIGH);
-//        }
 //        Toast.makeText(this, "selected priority " + priorities.get(position), Toast.LENGTH_LONG).show();
     }
 
