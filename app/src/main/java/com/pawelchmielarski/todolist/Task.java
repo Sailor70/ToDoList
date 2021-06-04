@@ -10,19 +10,19 @@ public class Task {
     private Date createdAt;
     private Date deadline;
     private Priority priority;
-    private String[] attachments;
+//    private String[] attachments;
 
     public Task() {
     }
 
-    public Task(String name, String description, boolean done, Date createdAt, Date deadline, Priority priority, String[] attachments) {
+    public Task(String name, String description, boolean done, Date createdAt, Date deadline, Priority priority) { // String[] attachments
         this.name = name;
         this.description = description;
         this.done = done;
         this.createdAt = createdAt;
         this.deadline = deadline;
         this.priority = priority;
-        this.attachments = attachments;
+//        this.attachments = attachments;
     }
 
     public String getName() {
@@ -73,11 +73,11 @@ public class Task {
         this.priority = priority;
     }
 
-    public String[] getAttachments() {
-        return attachments;
-    }
-
-    public void setAttachments(String[] attachments) {
-        this.attachments = attachments;
-    }
+//    public String[] getAttachments() {
+//        return attachments;
+//    }
+//
+//    public void setAttachments(String[] attachments) {
+//        this.attachments = attachments;
+//    }
 }

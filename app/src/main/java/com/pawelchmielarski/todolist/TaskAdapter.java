@@ -57,13 +57,24 @@ public class TaskAdapter extends BaseAdapter { // implements View.OnClickListene
         TextView tvDeadline = (TextView) convertView.findViewById(R.id.tvDeadline);
         CheckBox checkBoxDone = (CheckBox) convertView.findViewById(R.id.checkBoxDone);
         ImageView btnDelete = (ImageView) convertView.findViewById(R.id.ivDelete);
+        ImageView ivPriority = (ImageView) convertView.findViewById(R.id.imageViewPriority);
         // Populate the data into the template view using the data object
-        tvName.setText(tasks.get(pos).getName().concat(" "));
+        tvName.setText(task.getName().concat(" "));
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
 
-        tvDeadline.setText(sdf.format(tasks.get(pos).getDeadline()));
-        checkBoxDone.setChecked(tasks.get(pos).isDone());
+        if(task.getDeadline() != null) {
+            tvDeadline.setText(sdf.format(task.getDeadline()));
+        }
+        checkBoxDone.setChecked(task.isDone());
+        if(task.getPriority() == Priority.LOW) {
+            ivPriority.setImageResource(R.drawable.low_priority);
+        } else if(task.getPriority() == Priority.MEDIUM) {
+            ivPriority.setImageResource(R.drawable.medium_priority);
+        } else {
+            ivPriority.setImageResource(R.drawable.high_priority);
+        }
+
 
         // Click events
         checkBoxDone.setOnClickListener(new View.OnClickListener() {

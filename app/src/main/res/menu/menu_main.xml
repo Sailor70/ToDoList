@@ -7,4 +7,19 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_export_tasks"
+        android:orderInCategory="100"
+        android:title="@string/eksport_zada"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_import_tasks"
+        android:orderInCategory="100"
+        android:title="@string/import_zada"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sort"
+        android:orderInCategory="100"
+        android:title="@string/sortuj"
+        app:showAsAction="never" />
 </menu>

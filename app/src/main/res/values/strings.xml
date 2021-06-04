@@ -9,4 +9,20 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="sortuj">sortuj</string>
+    <string name="import_zada">import zadań</string>
+    <string name="eksport_zada">eksport zadań</string>
+
+    <string-array name="priority_array">
+        <item>Niski</item>
+        <item>Średni</item>
+        <item>Wysoki</item>
+    </string-array>
+
+    <string-array name="priority_labels">
+        <item><FONT COLOR="#3d0cad"><b>Niski</b></FONT></item>
+        <item><FONT COLOR="#759106"><b>Średni</b></FONT></item>
+        <item><FONT COLOR="#990b1e"><b>Wysoki</b></FONT></item>
+    </string-array>
+
 </resources>
