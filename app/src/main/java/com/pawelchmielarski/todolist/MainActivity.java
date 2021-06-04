@@ -49,33 +49,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        tasks = new ArrayList<Task>();
-//        createItems();
-//        tasksAdapter = new TaskAdapter(this, tasks);
-
         lvTasks = (ListView) findViewById(R.id.tasksList);
 
         taskAdapter = new TaskAdapter(this);
         lvTasks.setAdapter(taskAdapter);
-
-//        lvTasks.setOnItemClickListener(new OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> arg0, View v, int pos,
-//                                    long id) {
-//                // TODO Auto-generated method stub
-//
-//                Task item = taskAdapter.getItem(pos);
-//                Toast.makeText(getApplicationContext(), "kliknięto task o pozycji: " + pos, Toast.LENGTH_LONG).show();
-//
-//                Intent i = new Intent(getApplicationContext(), TaskDetailsActivity.class);
-//
-//                //PASS INDEX OR POS
-//                i.putExtra("Position", pos);
-//                startActivity(i);
-//
-//            }
-//        });
 
     }
 
@@ -107,9 +84,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void createItems() {
-        for (int i = 0; i < 20; i++) {
-            tasks.add(new Task("task" + i, "descr" + i, false, new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH, null ));
-        }
-    }
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="false"
     tools:context=".TaskDetailsActivity">
 
     <EditText
@@ -13,8 +14,8 @@
         android:layout_marginStart="17dp"
         android:layout_marginTop="17dp"
         android:ems="10"
+        android:hint="Nazwa"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,19 +26,25 @@
         android:layout_marginStart="17dp"
         android:layout_marginTop="21dp"
         android:ems="10"
+        android:hint="Termin"
         android:inputType="date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
     <EditText
         android:id="@+id/editTextMultiLineDescription"
-        android:layout_width="369dp"
-        android:layout_height="88dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="26dp"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="Opis"
         android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerPriority"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
 
@@ -45,11 +52,11 @@
         android:id="@+id/checkBoxDetailsDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="16dp"
-        android:text="done"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="17dp"
+        android:text="Wykonane"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextMultiLineDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPriority" />
 
     <Button
         android:id="@+id/buttonSave"
@@ -70,5 +77,34 @@
         android:text="Anuluj"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="28dp"
+        android:text="Wybierz"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewCreatedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="23dp"
+        android:text="Utworzono:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxDetailsDone" />
+
+    <Spinner
+        android:id="@+id/spinnerPriority"
+        android:layout_width="233dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="274dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

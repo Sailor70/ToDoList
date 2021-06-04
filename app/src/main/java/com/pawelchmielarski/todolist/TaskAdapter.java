@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class TaskAdapter extends BaseAdapter { // implements View.OnClickListener ?
 
@@ -56,8 +58,11 @@ public class TaskAdapter extends BaseAdapter { // implements View.OnClickListene
         CheckBox checkBoxDone = (CheckBox) convertView.findViewById(R.id.checkBoxDone);
         ImageView btnDelete = (ImageView) convertView.findViewById(R.id.ivDelete);
         // Populate the data into the template view using the data object
-        tvName.setText(tasks.get(pos).getName());
-        tvDeadline.setText(tasks.get(pos).getDeadline().toString());
+        tvName.setText(tasks.get(pos).getName().concat(" "));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+
+        tvDeadline.setText(sdf.format(tasks.get(pos).getDeadline()));
         checkBoxDone.setChecked(tasks.get(pos).isDone());
 
         // Click events
