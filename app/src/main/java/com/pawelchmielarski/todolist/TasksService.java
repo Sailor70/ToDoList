@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -50,6 +51,10 @@ public class TasksService {
 
     public void updateTask(int index, Task task) {
         tasks.set(index, task);
+    }
+
+    public void deleteTask(Task task) {
+        tasks.remove(task);
     }
 
     public void writeTasksToFile(Context ctx) {
@@ -118,11 +123,14 @@ public class TasksService {
         tasks.sort(compareByName);
     }
 
-    // po dacie utworzenia ? bo ona zawsze ma wartość a deadline może być pusty
     public void sortTasksByDeadline() {
-        Comparator<Task> compareByDeadline = (Task t1, Task t2) ->
-                t1.getDeadline().compareTo(t2.getDeadline());
-        tasks.sort(compareByDeadline);
+        tasks.sort(new Comparator<Task>() {
+            public int compare(Task t1, Task t2) {
+                if (t1.getDeadline() == null || t2.getDeadline() == null)
+                    return -1;
+                return t1.getDeadline().compareTo(t2.getDeadline());
+            }
+        });
     }
 
     public void sortTasksByDone() {
@@ -133,11 +141,6 @@ public class TasksService {
     }
 
     public void sortTasksByPriority() {
-//        Comparator<Task> compareByDeadline = (Task t1, Task t2) ->
-//                t1.getDeadline().compareTo(t2.getDeadline());
-//        Comparator<Task> compareByPriority = Comparator.comparing(Task::getPriority, Priority::ordinal);
-//        tasks.sort(compareByPriority);
-
-//        Priority.values();
+        tasks.sort((a1, a2) -> a1.getPriority().compareTo(a2.getPriority()));
     }
 }

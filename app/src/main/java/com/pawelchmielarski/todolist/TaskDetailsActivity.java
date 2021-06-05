@@ -1,6 +1,7 @@
 package com.pawelchmielarski.todolist;
 
 import android.app.DatePickerDialog;
+import android.app.TaskStackBuilder;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.icu.util.Calendar;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -37,6 +39,7 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
     CheckBox checkBoxDone;
     TextView tvCreatedAt;
     Spinner spPriority;
+    ImageView ivDelete;
 
     TaskAdapter taskAdapter;
     int pos = -1;
@@ -68,6 +71,7 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
         btnSave = (Button) findViewById(R.id.buttonSave);
         btnCancel = (Button) findViewById(R.id.buttonCancel);
         btnDeadlinePicker = (Button) findViewById(R.id.buttonDatePicker);
+        ivDelete = (ImageView) findViewById(R.id.ivDelete);
 
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.priority_array, android.R.layout.simple_spinner_item);
@@ -92,6 +96,7 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
         btnDeadlinePicker.setOnClickListener(this);
         etTaskDeadline.setEnabled(false); // wybór daty tylko z pickera
         spPriority.setOnItemSelectedListener(this);
+        ivDelete.setOnClickListener(this);
 
     }
 
@@ -134,6 +139,9 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
             Toast.makeText(this, "task saved " + task.getName(), Toast.LENGTH_LONG).show();
             finish();
         } else if (view.getId() == btnCancel.getId()) {
+            finish();
+        } else if(view.getId() == ivDelete.getId()) {
+            TasksService.getInstance().deleteTask(task);
             finish();
         }
     }

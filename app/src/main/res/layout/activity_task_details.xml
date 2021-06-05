@@ -34,29 +34,29 @@
     <EditText
         android:id="@+id/editTextMultiLineDescription"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="88dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="112dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="26dp"
+        android:layout_marginBottom="110dp"
         android:ems="10"
         android:gravity="start|top"
         android:hint="Opis"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerPriority"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBoxDetailsDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
+        app:layout_constraintTop_toBottomOf="@+id/ivDelete" />
 
     <CheckBox
         android:id="@+id/checkBoxDetailsDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="310dp"
         android:text="Wykonane"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerPriority" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonSave"
@@ -82,11 +82,13 @@
         android:id="@+id/buttonDatePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="27dp"
         android:layout_marginEnd="28dp"
+        android:layout_marginBottom="37dp"
         android:text="Wybierz"
+        app:layout_constraintBottom_toTopOf="@+id/editTextMultiLineDescription"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ivDelete" />
 
     <TextView
         android:id="@+id/textViewCreatedAt"
@@ -103,8 +105,21 @@
         android:layout_width="233dp"
         android:layout_height="19dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="274dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="17dp"
+        app:layout_constraintBottom_toTopOf="@+id/checkBoxDetailsDone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextMultiLineDescription" />
+
+    <ImageView
+        android:id="@+id/ivDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

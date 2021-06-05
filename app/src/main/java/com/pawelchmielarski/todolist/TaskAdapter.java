@@ -65,6 +65,8 @@ public class TaskAdapter extends BaseAdapter { // implements View.OnClickListene
 
         if(task.getDeadline() != null) {
             tvDeadline.setText(sdf.format(task.getDeadline()));
+        } else {
+            tvDeadline.setText("");
         }
         checkBoxDone.setChecked(task.isDone());
         if(task.getPriority() == Priority.LOW) {
@@ -88,8 +90,9 @@ public class TaskAdapter extends BaseAdapter { // implements View.OnClickListene
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tasks.remove(task);
-                TasksService.getInstance().setTasks(tasks);
+//                tasks.remove(task);
+//                TasksService.getInstance().setTasks(tasks);
+                TasksService.getInstance().deleteTask(task);
                 notifyDataSetChanged();
             }
         });
