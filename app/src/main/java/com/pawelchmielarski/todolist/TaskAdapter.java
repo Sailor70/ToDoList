@@ -5,24 +5,20 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class TaskAdapter extends BaseAdapter { // implements View.OnClickListener ?
+public class TaskAdapter extends BaseAdapter {
 
     Context context;
     ArrayList<Task> tasks;
 
-    // może ten adapter zrobić singletonem i wywalić serwis?
     public TaskAdapter(Context ctx) {
         this.context = ctx;
         this.tasks = TasksService.getInstance().getTasks();
@@ -52,13 +48,12 @@ public class TaskAdapter extends BaseAdapter { // implements View.OnClickListene
             convertView = LayoutInflater.from(context).inflate(R.layout.task_list_item, parent, false);
         }
 
-        // Lookup view for data population
         TextView tvName = (TextView) convertView.findViewById(R.id.tvName);
         TextView tvDeadline = (TextView) convertView.findViewById(R.id.tvDeadline);
         CheckBox checkBoxDone = (CheckBox) convertView.findViewById(R.id.checkBoxDone);
-        ImageView btnDelete = (ImageView) convertView.findViewById(R.id.ivDelete);
+        ImageView btnDelete = (ImageView) convertView.findViewById(R.id.ivListDelete);
         ImageView ivPriority = (ImageView) convertView.findViewById(R.id.imageViewPriority);
-        // Populate the data into the template view using the data object
+
         tvName.setText(task.getName().concat(" "));
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
@@ -70,28 +65,23 @@ public class TaskAdapter extends BaseAdapter { // implements View.OnClickListene
         }
         checkBoxDone.setChecked(task.isDone());
         if(task.getPriority() == Priority.LOW) {
-            ivPriority.setImageResource(R.drawable.low_priority);
+            ivPriority.setImageResource(R.drawable.low_p);
         } else if(task.getPriority() == Priority.MEDIUM) {
-            ivPriority.setImageResource(R.drawable.medium_priority);
+            ivPriority.setImageResource(R.drawable.medium_p);
         } else {
-            ivPriority.setImageResource(R.drawable.high_priority);
+            ivPriority.setImageResource(R.drawable.high_p);
         }
 
-
-        // Click events
         checkBoxDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 task.setDone(!task.isDone());
-                Toast.makeText(context, "task done " + task.isDone(), Toast.LENGTH_LONG).show();
                 TasksService.getInstance().setTaskDone(pos, task.isDone());
             }
         });
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                tasks.remove(task);
-//                TasksService.getInstance().setTasks(tasks);
                 TasksService.getInstance().deleteTask(task);
                 notifyDataSetChanged();
             }
@@ -99,9 +89,7 @@ public class TaskAdapter extends BaseAdapter { // implements View.OnClickListene
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "kliknięto task o pozycji: " + pos, Toast.LENGTH_LONG).show();
                 Intent i = new Intent(context, TaskDetailsActivity.class);
-                //PASS INDEX OR POS
                 i.putExtra("Position", pos);
                 context.startActivity(i);
             }

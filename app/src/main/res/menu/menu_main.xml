@@ -20,7 +20,7 @@
     <item
         android:id="@+id/action_sort_deadline"
         android:orderInCategory="100"
-        android:title="sortuj po deadline"
+        android:title="sortuj po terminie"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_sort_priority"

@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,13 +36,10 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<Task> tasks;
-    //    private TaskAdapter tasksAdapter;
-    private ListView lvTasks;
     private TaskAdapter taskAdapter;
     private static final int PERMISSION_REQUEST_CODE = 1967;
-    private static final String CHANNEL_ID = "NTF";
 
+    private boolean notification = true;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -50,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
-//        checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -61,24 +57,26 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), TaskDetailsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
             }
         });
 
-        lvTasks = (ListView) findViewById(R.id.tasksList);
+        ListView lvTasks = (ListView) findViewById(R.id.tasksList);
         taskAdapter = new TaskAdapter(this);
         lvTasks.setAdapter(taskAdapter);
 
-//        getPermissions();
+        getPermissions();
 
         TasksService.getInstance().readTasksFromFile(this);
         TasksService.getInstance().sortTasksByDone();
         taskAdapter.notifyDataSetChanged();
 
-        // TODO lepszy moment na takie powiadomienia
-        this.setDelayedNotification();
-
+        Intent i = getIntent();
+        if (i.getExtras() != null) {
+            notification = i.getExtras().getBoolean("notification");
+        }
+        if (notification) {
+            this.setDelayedNotification();
+        }
     }
 
     @Override
@@ -96,23 +94,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onDestroy() {
-        this.setDelayedNotification();
-        super.onDestroy();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.action_export_tasks) {
@@ -169,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setDelayedNotification() {
-        AlarmManager alarms = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarms = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 
         TasksNotificationReceiver receiver = new TasksNotificationReceiver();
         IntentFilter filter = new IntentFilter("ALARM_ACTION");
@@ -178,45 +166,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent("ALARM_ACTION");
         intent.putExtra("param", "My scheduled action");
         PendingIntent operation = PendingIntent.getBroadcast(this, 0, intent, 0);
-        // I choose 3s after the launch of my application
-        alarms.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+3000, operation) ;
-    }
-
-    private void tasksNotification() {
-        int numberOfTasks = numberOftasksToDo();
-        if (numberOfTasks > 0) {
-            Intent intentNotification = new Intent(this, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intentNotification, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            NotificationCompat.Builder builderNotificationCompat = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentIntent(pendingIntent)
-                    .setContentTitle("Przypomnienie o zadaniach")
-                    .setContentText("Liczba zadań do wykonania na dziś: " + numberOfTasks)
-//                .setContentIntent(pendingIntent) // co się otwiera po kliku
-                    .setSmallIcon(android.R.drawable.btn_star_big_on);
-
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "", NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(notificationChannel);
-            notificationManager.notify(0, builderNotificationCompat.build());
-        }
-    }
-
-    private int numberOftasksToDo() {
-        ArrayList<Task> tasks = TasksService.getInstance().getTasks();
-        int toDo = 0;
-        Date nextDay = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(nextDay);
-        c.add(Calendar.DATE, 1);
-        nextDay = c.getTime();
-        for(Task tsk : tasks) {
-            if((tsk.getDeadline() != null) && (tsk.getDeadline().before(nextDay))) {
-                toDo++;
-            }
-        }
-        return toDo;
+        alarms.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, operation);
     }
 
 }
@@ -229,15 +179,15 @@ class TasksNotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         int numberOfTasks = numberOftasksToDo();
-        if(numberOfTasks > 0) {
+        if (numberOfTasks > 0) {
             Intent intentNotification = new Intent(context, MainActivity.class);
+            intentNotification.putExtra("notification", false);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intentNotification, PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder builderNotificationCompat = new NotificationCompat.Builder(context, CHANNEL_ID)
                     .setContentIntent(pendingIntent)
                     .setContentTitle("Przypomnienie o zadaniach")
                     .setContentText("Liczba zadań do wykonania na dziś: " + numberOfTasks)
-//                .setContentIntent(pendingIntent) // co się otwiera po kliku
                     .setSmallIcon(android.R.drawable.btn_star_big_on);
 
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
@@ -246,7 +196,6 @@ class TasksNotificationReceiver extends BroadcastReceiver {
             notificationManager.createNotificationChannel(notificationChannel);
             notificationManager.notify(0, builderNotificationCompat.build());
         }
-//        Toast.makeText(context, intent.getStringExtra("param"),Toast.LENGTH_SHORT).show();
     }
 
     private int numberOftasksToDo() {
@@ -257,14 +206,13 @@ class TasksNotificationReceiver extends BroadcastReceiver {
         c.setTime(nextDay);
         c.add(Calendar.DATE, 1);
         nextDay = c.getTime();
-        for(Task tsk : tasks) {
-            if((tsk.getDeadline() != null) && (tsk.getDeadline().before(nextDay))) {
+        for (Task tsk : tasks) {
+            if ((tsk.getDeadline() != null) && (tsk.getDeadline().before(nextDay))) {
                 toDo++;
             }
         }
         return toDo;
     }
-
 
 }
 

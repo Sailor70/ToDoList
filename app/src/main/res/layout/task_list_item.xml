@@ -1,40 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:descendantFocusability = "blocksDescendants">
+    android:layout_height="70dp"
+    app:layout_constraintBottom_toTopOf="@+id/tvDeadline"
+    app:layout_constraintTop_toTopOf="@+id/tvDeadline">
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/tvName"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        tools:layout_editor_absoluteX="100dp"-->
+    <!--        tools:layout_editor_absoluteY="30dp" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/tvDeadline"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        tools:layout_editor_absoluteX="100dp"-->
+    <!--        tools:layout_editor_absoluteY="10dp" />-->
+
+    <!--    <ImageView-->
+    <!--        android:id="@+id/imageViewPriority"-->
+    <!--        app:srcCompat="@android:drawable/presence_online"-->
+    <!--        android:layout_width="44dp"-->
+    <!--        android:layout_height="38dp"-->
+    <!--        android:layout_weight="1"-->
+    <!--        android:scaleType="fitXY"-->
+    <!--        tools:layout_editor_absoluteX="16dp"-->
+    <!--        tools:layout_editor_absoluteY="10dp" />-->
+
+    <!--    <CheckBox-->
+    <!--        android:id="@+id/checkBoxDone"-->
+    <!--        android:layout_width="32dp"-->
+    <!--        android:layout_height="35dp"-->
+    <!--        android:layout_weight="1"-->
+    <!--        tools:layout_editor_absoluteX="329dp"-->
+    <!--        tools:layout_editor_absoluteY="16dp" />-->
+
+    <!--    <ImageView-->
+    <!--        android:id="@+id/ivDelete"-->
+    <!--        app:srcCompat="@android:drawable/ic_menu_delete"-->
+    <!--        android:layout_width="39dp"-->
+    <!--        android:layout_height="32dp"-->
+    <!--        android:layout_weight="1"-->
+    <!--        tools:layout_editor_absoluteX="369dp"-->
+    <!--        tools:layout_editor_absoluteY="16dp" />-->
+    <ImageView
+        android:id="@+id/imageViewPriority"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvDeadline"
+        app:layout_constraintEnd_toStartOf="@+id/tvName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvDeadline"
+        app:srcCompat="@drawable/low_priority" />
 
     <TextView
         android:id="@+id/tvName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="3dp"
+        android:text="Name"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvDeadline"
+        app:layout_constraintEnd_toStartOf="@+id/ivListDelete"
+        app:layout_constraintStart_toEndOf="@+id/imageViewPriority"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvDeadline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <ImageView
-        android:id="@+id/imageViewPriority"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:scaleType="fitXY"
-        android:layout_weight="1"
-        app:srcCompat="@android:drawable/presence_online" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="11dp"
+        android:text="Termin"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvName"
+        app:layout_constraintStart_toStartOf="@+id/tvName"
+        app:layout_constraintTop_toBottomOf="@+id/tvName" />
 
     <CheckBox
         android:id="@+id/checkBoxDone"
-        android:layout_width="20dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
-    <ImageView
-        android:id="@+id/ivDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivListDelete"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivListDelete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvDeadline"
+        app:layout_constraintEnd_toStartOf="@+id/checkBoxDone"
+        app:layout_constraintStart_toEndOf="@+id/tvName"
+        app:layout_constraintTop_toTopOf="@+id/tvDeadline"
         app:srcCompat="@android:drawable/ic_menu_delete" />
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

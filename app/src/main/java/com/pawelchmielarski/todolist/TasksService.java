@@ -24,9 +24,6 @@ public class TasksService {
 
     public TasksService() {
         tasks = new ArrayList<Task>();
-//        for (int i = 0; i < 20; i++) {
-//            tasks.add(new Task("task" + i, "descr" + i, false, new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + 100000), Priority.HIGH));
-//        }
     }
 
     public static TasksService getInstance() {
@@ -60,9 +57,6 @@ public class TasksService {
     public void writeTasksToFile(Context ctx) {
         try {
             FileOutputStream fileOutputStream = ctx.openFileOutput("tasks.txt", Context.MODE_PRIVATE);
-//            PrintWriter writer = new PrintWriter(new OutputStreamWriter(fileOutputStream));
-//            writer.print(""); // czyszczenie pliku
-//            writer.close();
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
             for (Task task : tasks) {
                 bw.write(task.getName() + "," + task.getDescription() + "," + task.isDone() + "," + task.getCreatedAt() + "," + task.getDeadline()
@@ -89,22 +83,18 @@ public class TasksService {
 
                     while ((line = bufferedReader.readLine()) != null) {
                         String[] fields = line.split(",");
-                        Log.i("Date : ", fields[4]);
                         Task tsk = new Task();
                         tsk.setName(fields[0]);
                         tsk.setDescription(fields[1]);
                         tsk.setDone(Boolean.parseBoolean(fields[2]));
                         tsk.setCreatedAt(new Date(fields[3]));
                         if (!fields[4].equals("null")) {
-                            Log.i("Date : ", "Wlazło tam gdzie nie trzeba");
                             tsk.setDeadline(new Date(fields[4]));
                         } else {
                             tsk.setDeadline(null);
                         }
                         tsk.setPriority(Priority.valueOf(fields[5]));
                         tasks.add(tsk);
-//                    tasks.add(new Task(fields[0],fields[1],Boolean.parseBoolean(fields[2]), new Date(fields[3]),
-//                            fields[3] == null ? null : new Date(fields[4]), Priority.valueOf(fields[5])));
                     }
 
                     inputStream.close();
@@ -141,6 +131,12 @@ public class TasksService {
     }
 
     public void sortTasksByPriority() {
-        tasks.sort((a1, a2) -> a1.getPriority().compareTo(a2.getPriority()));
+        tasks.sort(new Comparator<Task>() {
+            public int compare(Task t1, Task t2) {
+                int i = t1.getPriority().compareTo(t2.getPriority());
+                if(i != 0) return -i;  // reverse sort
+                return t1.getPriority().compareTo(t2.getPriority());
+            }
+        });
     }
 }
