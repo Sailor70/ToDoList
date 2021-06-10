@@ -67,7 +67,7 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
         ivDelete = (ImageView) findViewById(R.id.ivDelete);
 
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.priority_array, android.R.layout.simple_spinner_item);
+                R.array.priority_labels, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spPriority.setAdapter(spinnerAdapter);
 
@@ -98,7 +98,7 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
     public void loadTask() {
         task = TasksService.getInstance().getTasks().get(pos);
         etTaskName.setText(task.getName());
-        if(task.getDeadline() != null) {
+        if (task.getDeadline() != null) {
             etTaskDeadline.setText(sdf.format(task.getDeadline()));
         }
         etTaskDescription.setText(task.getDescription());
@@ -114,13 +114,13 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
         if (view.getId() == checkBoxDone.getId()) {
             task.setDone(!task.isDone());
             TasksService.getInstance().setTaskDone(pos, task.isDone());
-        } else if(view.getId() == btnDeadlinePicker.getId()) {
+        } else if (view.getId() == btnDeadlinePicker.getId()) {
             Calendar calendar = Calendar.getInstance();
             year = calendar.get(Calendar.YEAR);
             month = calendar.get(Calendar.MONTH);
             day = calendar.get(Calendar.DAY_OF_MONTH);
 //                day = task.getDeadline().getDay();
-            DatePickerDialog datePickerDialog = new DatePickerDialog(TaskDetailsActivity.this, TaskDetailsActivity.this,year, month,day);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(TaskDetailsActivity.this, TaskDetailsActivity.this, year, month, day);
             datePickerDialog.show();
         } else if (view.getId() == btnSave.getId()) {
             if (etTaskName.getText().length() < 1) {
@@ -131,7 +131,7 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
             }
         } else if (view.getId() == btnCancel.getId()) {
             finish();
-        } else if(view.getId() == ivDelete.getId()) {
+        } else if (view.getId() == ivDelete.getId()) {
             TasksService.getInstance().deleteTask(task);
             finish();
         }
@@ -146,10 +146,10 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void inputsToTask()  {
+    private void inputsToTask() {
         task.setName(etTaskName.getText().toString());
         task.setDescription(etTaskDescription.getText().toString());
-        if (etTaskDeadline.getText().length() > 0) {
+        if (!etTaskDeadline.getText().toString().equals("Termin")) {
             try {
                 task.setDeadline(sdf.parse(etTaskDeadline.getText().toString()));
             } catch (ParseException e) {
@@ -157,7 +157,9 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
             }
         }
         task.setDone(checkBoxDone.isChecked());
-        task.setCreatedAt(new Date(System.currentTimeMillis()));
+        if (task.getCreatedAt() == null) {
+            task.setCreatedAt(new Date(System.currentTimeMillis()));
+        }
     }
 
     @Override
@@ -178,22 +180,22 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
         selectedMinute = minute;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
         String date1 = String.valueOf(selectedYear);
-        if(selectedMonth > 9) {
+        if (selectedMonth > 9) {
             date1 = date1.concat("-" + selectedMonth);
         } else {
             date1 = date1.concat("-0" + selectedMonth);
         }
-        if(selectedDay > 9) {
+        if (selectedDay > 9) {
             date1 = date1.concat("-" + selectedDay);
         } else {
             date1 = date1.concat("-0" + selectedDay);
         }
-        if(selectedHour > 9) {
+        if (selectedHour > 9) {
             date1 = date1.concat(" " + selectedHour);
         } else {
             date1 = date1.concat(" 0" + selectedHour);
         }
-        if(selectedMinute > 9) {
+        if (selectedMinute > 9) {
             date1 = date1.concat(":" + selectedMinute);
         } else {
             date1 = date1.concat(":0" + selectedMinute);

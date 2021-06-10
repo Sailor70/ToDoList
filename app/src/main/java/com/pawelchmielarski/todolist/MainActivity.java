@@ -12,11 +12,14 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TaskAdapter taskAdapter;
     private static final int PERMISSION_REQUEST_CODE = 1967;
+    Spinner spSort;
 
     private boolean notification = true;
 
@@ -60,14 +64,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        initPrioritySpinner();
+        getPermissions();
+
         ListView lvTasks = (ListView) findViewById(R.id.tasksList);
         taskAdapter = new TaskAdapter(this);
         lvTasks.setAdapter(taskAdapter);
 
-        getPermissions();
-
         TasksService.getInstance().readTasksFromFile(this);
-        TasksService.getInstance().sortTasksByDone();
+        TasksService.getInstance().sortTasksByCreatedAt();
         taskAdapter.notifyDataSetChanged();
 
         Intent i = getIntent();
@@ -82,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        TasksService.getInstance().sortTasksByDone();
+        TasksService.getInstance().sortTasksByCreatedAt();
         taskAdapter.notifyDataSetChanged();
     }
 
@@ -109,21 +114,53 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.action_import_tasks) {
             TasksService.getInstance().readTasksFromFile(this);
             taskAdapter.notifyDataSetChanged();
-        } else if (id == R.id.action_sort_name) {
-            TasksService.getInstance().sortTasksByName();
-            taskAdapter.notifyDataSetChanged();
-        } else if (id == R.id.action_sort_deadline) {
-            TasksService.getInstance().sortTasksByDeadline();
-            taskAdapter.notifyDataSetChanged();
-        } else if (id == R.id.action_sort_done) {
-            TasksService.getInstance().sortTasksByDone();
-            taskAdapter.notifyDataSetChanged();
-        } else if (id == R.id.action_sort_priority) {
-            TasksService.getInstance().sortTasksByPriority();
-            taskAdapter.notifyDataSetChanged();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initPrioritySpinner() {
+        spSort = (Spinner) findViewById(R.id.spinnerSort);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.sort_array, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spSort.setAdapter(spinnerAdapter);
+        spSort.setSelection(0); // sortByName
+        spSort.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        TasksService.getInstance().sortTasksByCreatedAt();
+                        taskAdapter.notifyDataSetChanged();
+                        break;
+                    case 1:
+                        TasksService.getInstance().sortTasksByDeadline();
+                        taskAdapter.notifyDataSetChanged();
+                        break;
+                    case 2:
+                        TasksService.getInstance().sortTasksByName();
+                        taskAdapter.notifyDataSetChanged();
+                        break;
+                    case 3:
+                        TasksService.getInstance().sortTasksByPriority();
+                        taskAdapter.notifyDataSetChanged();
+                        break;
+                    case 4:
+                        TasksService.getInstance().sortTasksByDone();
+                        taskAdapter.notifyDataSetChanged();
+                        break;
+                    default:
+                        TasksService.getInstance().sortTasksByName();
+                        taskAdapter.notifyDataSetChanged();
+                        break;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        } );
     }
 
     public void getPermissions() {
@@ -188,7 +225,7 @@ class TasksNotificationReceiver extends BroadcastReceiver {
                     .setContentIntent(pendingIntent)
                     .setContentTitle("Przypomnienie o zadaniach")
                     .setContentText("Liczba zadań do wykonania na dziś: " + numberOfTasks)
-                    .setSmallIcon(android.R.drawable.btn_star_big_on);
+                    .setSmallIcon(android.R.drawable.ic_dialog_info);
 
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
 

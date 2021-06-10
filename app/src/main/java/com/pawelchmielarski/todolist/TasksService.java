@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -114,13 +113,13 @@ public class TasksService {
     }
 
     public void sortTasksByDeadline() {
-        tasks.sort(new Comparator<Task>() {
-            public int compare(Task t1, Task t2) {
-                if (t1.getDeadline() == null || t2.getDeadline() == null)
-                    return -1;
-                return t1.getDeadline().compareTo(t2.getDeadline());
-            }
-        });
+        Comparator<Task> compareByDeadline = Comparator.comparing(Task::getDeadline, Comparator.nullsLast(Comparator.naturalOrder()));
+        tasks.sort(compareByDeadline);
+    }
+
+    public void sortTasksByCreatedAt() {
+        Comparator<Task> compareByCreatedAt = Comparator.comparing(Task::getCreatedAt, Date::compareTo).reversed();
+        tasks.sort(compareByCreatedAt);
     }
 
     public void sortTasksByDone() {

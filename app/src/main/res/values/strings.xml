@@ -19,10 +19,18 @@
         <item>Wysoki</item>
     </string-array>
 
+    <string-array name="sort_array">
+        <item>Sortuj po dacie utworzenia</item>
+        <item>Sortuj po terminie</item>
+        <item>Sortuj po nazwie</item>
+        <item>Sortuj po priorytecie</item>
+        <item>Najpierw niezrobione</item>
+    </string-array>
+
     <string-array name="priority_labels">
-        <item><FONT COLOR="#3d0cad"><b>Niski</b></FONT></item>
-        <item><FONT COLOR="#759106"><b>Średni</b></FONT></item>
-        <item><FONT COLOR="#990b1e"><b>Wysoki</b></FONT></item>
+        <item><font fgcolor='#0ec92d'><b>Niski priorytet</b></font></item>
+        <item><font fgcolor='#fcd303'><b>Średni priorytet</b></font></item>
+        <item><font fgcolor='#990b1e'><b>Wysoki priorytet</b></font></item>
     </string-array>
 
 </resources>

@@ -77,6 +77,7 @@ public class TaskAdapter extends BaseAdapter {
             public void onClick(View view) {
                 task.setDone(!task.isDone());
                 TasksService.getInstance().setTaskDone(pos, task.isDone());
+                notifyDataSetChanged();
             }
         });
         btnDelete.setOnClickListener(new View.OnClickListener() {

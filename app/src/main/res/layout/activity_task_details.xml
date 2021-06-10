@@ -76,21 +76,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxDetailsDone" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="72dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="115dp"
-        android:layout_marginBottom="106dp"
-        android:text="Priorytet:"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewCreatedAt"
-        app:layout_constraintEnd_toStartOf="@+id/spinnerPriority"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTextMultiLineDescription"
-        app:layout_constraintVertical_bias="0.444" />
-
     <CheckBox
         android:id="@+id/checkBoxDetailsDone"
         android:layout_width="wrap_content"
@@ -103,15 +88,16 @@
 
     <Spinner
         android:id="@+id/spinnerPriority"
-        android:layout_width="155dp"
+        android:layout_width="200dp"
         android:layout_height="25dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="120dp"
         android:layout_marginBottom="19dp"
         app:layout_constraintBottom_toTopOf="@+id/checkBoxDetailsDone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/editTextMultiLineDescription" />
+        app:layout_constraintHorizontal_bias="0.094"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextMultiLineDescription"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/editTextMultiLineDescription"
