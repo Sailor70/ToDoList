@@ -18,7 +18,6 @@ import java.util.Date;
 public class TasksService {
 
     private static final TasksService INSTANCE = new TasksService(); // singleton pattern
-
     private ArrayList<Task> tasks;
 
     public TasksService() {
@@ -53,13 +52,15 @@ public class TasksService {
         tasks.remove(task);
     }
 
+    private static String SEPARATOR = ",,s,,";
+
     public void writeTasksToFile(Context ctx) {
         try {
             FileOutputStream fileOutputStream = ctx.openFileOutput("tasks.txt", Context.MODE_PRIVATE);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
             for (Task task : tasks) {
-                bw.write(task.getName() + "," + task.getDescription() + "," + task.isDone() + "," + task.getCreatedAt() + "," + task.getDeadline()
-                        + "," + task.getPriority());
+                bw.write(task.getName() + SEPARATOR + task.getDescription() + SEPARATOR + task.isDone() + SEPARATOR
+                        + task.getCreatedAt() + SEPARATOR + task.getDeadline() + SEPARATOR + task.getPriority());
                 bw.newLine();
             }
             bw.close();
@@ -70,8 +71,7 @@ public class TasksService {
     }
 
     public void readTasksFromFile(Context ctx) {
-
-        if(!(tasks.size() > 0)) {
+        if (!(tasks.size() > 0)) {
             try {
                 InputStream inputStream = ctx.openFileInput("tasks.txt");
 
@@ -81,7 +81,7 @@ public class TasksService {
                     String line = "";
 
                     while ((line = bufferedReader.readLine()) != null) {
-                        String[] fields = line.split(",");
+                        String[] fields = line.split(SEPARATOR);
                         Task tsk = new Task();
                         tsk.setName(fields[0]);
                         tsk.setDescription(fields[1]);
@@ -113,7 +113,8 @@ public class TasksService {
     }
 
     public void sortTasksByDeadline() {
-        Comparator<Task> compareByDeadline = Comparator.comparing(Task::getDeadline, Comparator.nullsLast(Comparator.naturalOrder()));
+        Comparator<Task> compareByDeadline = Comparator.comparing(Task::getDeadline,
+                Comparator.nullsLast(Comparator.naturalOrder()));
         tasks.sort(compareByDeadline);
     }
 
@@ -133,7 +134,7 @@ public class TasksService {
         tasks.sort(new Comparator<Task>() {
             public int compare(Task t1, Task t2) {
                 int i = t1.getPriority().compareTo(t2.getPriority());
-                if(i != 0) return -i;  // reverse sort
+                if (i != 0) return -i;  // reverse sort
                 return t1.getPriority().compareTo(t2.getPriority());
             }
         });

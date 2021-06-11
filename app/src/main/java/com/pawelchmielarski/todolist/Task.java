@@ -10,7 +10,6 @@ public class Task {
     private Date createdAt;
     private Date deadline;
     private Priority priority;
-//    private String[] attachments;
 
     public Task() {
     }
@@ -22,7 +21,6 @@ public class Task {
         this.createdAt = createdAt;
         this.deadline = deadline;
         this.priority = priority;
-//        this.attachments = attachments;
     }
 
     public String getName() {
@@ -73,11 +71,4 @@ public class Task {
         this.priority = priority;
     }
 
-//    public String[] getAttachments() {
-//        return attachments;
-//    }
-//
-//    public void setAttachments(String[] attachments) {
-//        this.attachments = attachments;
-//    }
 }

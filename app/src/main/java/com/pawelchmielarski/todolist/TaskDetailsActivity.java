@@ -178,7 +178,8 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
         Calendar c = Calendar.getInstance();
         hour = c.get(Calendar.HOUR);
         minute = c.get(Calendar.MINUTE);
-        TimePickerDialog timePickerDialog = new TimePickerDialog(TaskDetailsActivity.this, TaskDetailsActivity.this, hour, minute, DateFormat.is24HourFormat(this));
+        TimePickerDialog timePickerDialog = new TimePickerDialog(TaskDetailsActivity.this,
+                TaskDetailsActivity.this, hour, minute, DateFormat.is24HourFormat(this));
         timePickerDialog.show();
     }
 

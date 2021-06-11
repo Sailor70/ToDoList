@@ -7,46 +7,6 @@
     app:layout_constraintBottom_toTopOf="@+id/tvDeadline"
     app:layout_constraintTop_toTopOf="@+id/tvDeadline">
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/tvName"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        tools:layout_editor_absoluteX="100dp"-->
-    <!--        tools:layout_editor_absoluteY="30dp" />-->
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/tvDeadline"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        tools:layout_editor_absoluteX="100dp"-->
-    <!--        tools:layout_editor_absoluteY="10dp" />-->
-
-    <!--    <ImageView-->
-    <!--        android:id="@+id/imageViewPriority"-->
-    <!--        app:srcCompat="@android:drawable/presence_online"-->
-    <!--        android:layout_width="44dp"-->
-    <!--        android:layout_height="38dp"-->
-    <!--        android:layout_weight="1"-->
-    <!--        android:scaleType="fitXY"-->
-    <!--        tools:layout_editor_absoluteX="16dp"-->
-    <!--        tools:layout_editor_absoluteY="10dp" />-->
-
-    <!--    <CheckBox-->
-    <!--        android:id="@+id/checkBoxDone"-->
-    <!--        android:layout_width="32dp"-->
-    <!--        android:layout_height="35dp"-->
-    <!--        android:layout_weight="1"-->
-    <!--        tools:layout_editor_absoluteX="329dp"-->
-    <!--        tools:layout_editor_absoluteY="16dp" />-->
-
-    <!--    <ImageView-->
-    <!--        android:id="@+id/ivDelete"-->
-    <!--        app:srcCompat="@android:drawable/ic_menu_delete"-->
-    <!--        android:layout_width="39dp"-->
-    <!--        android:layout_height="32dp"-->
-    <!--        android:layout_weight="1"-->
-    <!--        tools:layout_editor_absoluteX="369dp"-->
-    <!--        tools:layout_editor_absoluteY="16dp" />-->
     <ImageView
         android:id="@+id/imageViewPriority"
         android:layout_width="40dp"
@@ -57,7 +17,7 @@
         app:layout_constraintEnd_toStartOf="@+id/tvName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvDeadline"
-        app:srcCompat="@drawable/low_priority" />
+        app:srcCompat="@drawable/low_p" />
 
     <TextView
         android:id="@+id/tvName"

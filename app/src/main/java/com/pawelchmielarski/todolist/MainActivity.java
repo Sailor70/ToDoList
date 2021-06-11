@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         TasksService.getInstance().sortTasksByCreatedAt();
+        spSort.setSelection(0);
         taskAdapter.notifyDataSetChanged();
     }
 
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 R.array.sort_array, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSort.setAdapter(spinnerAdapter);
-        spSort.setSelection(0); // sortByName
+        spSort.setSelection(0);
         spSort.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -235,16 +236,14 @@ class TasksNotificationReceiver extends BroadcastReceiver {
     private int numberOftasksToDo() {
         ArrayList<Task> tasks = TasksService.getInstance().getTasks();
         int toDo = 0;
-
         Calendar todayMidnight = new GregorianCalendar();
         todayMidnight.set(Calendar.HOUR_OF_DAY, 23);
         todayMidnight.set(Calendar.MINUTE, 59);
         todayMidnight.set(Calendar.SECOND, 59);
         todayMidnight.set(Calendar.MILLISECOND, 0);
         Date todayMidnightDate = todayMidnight.getTime();
-
         for (Task tsk : tasks) {
-            if ((tsk.getDeadline() != null) && (tsk.getDeadline().before(todayMidnightDate))) {
+            if ((tsk.getDeadline() != null) && (tsk.getDeadline().before(todayMidnightDate)) && (!tsk.isDone())) {
                 toDo++;
             }
         }
