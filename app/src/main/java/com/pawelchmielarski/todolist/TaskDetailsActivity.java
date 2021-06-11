@@ -71,7 +71,7 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spPriority.setAdapter(spinnerAdapter);
 
-        //Pobieranie taska i ustalenie trybu działania aktywności. wczytanie danych z listy lub nowe zadanie
+        //Pobieranie zadania i ustalenie trybu działania aktywności. wczytanie danych z listy lub nowe zadanie
         Intent i = getIntent();
         if (i.getExtras() == null) {
             initNewTask();
@@ -88,6 +88,15 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
         btnDeadlinePicker.setOnClickListener(this);
         spPriority.setOnItemSelectedListener(this);
         ivDelete.setOnClickListener(this);
+
+        ivDelete.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                TasksService.getInstance().deleteTask(task);
+                finish();
+                return true;
+            }
+        });
 
     }
 
@@ -132,8 +141,7 @@ public class TaskDetailsActivity extends AppCompatActivity implements View.OnCli
         } else if (view.getId() == btnCancel.getId()) {
             finish();
         } else if (view.getId() == ivDelete.getId()) {
-            TasksService.getInstance().deleteTask(task);
-            finish();
+            Toast.makeText(this, "Przytrzymaj dłużej, aby usunąć zadanie", Toast.LENGTH_SHORT).show();
         }
     }
 

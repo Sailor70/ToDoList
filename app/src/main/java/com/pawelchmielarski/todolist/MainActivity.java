@@ -12,8 +12,6 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -34,6 +32,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -98,26 +97,27 @@ public class MainActivity extends AppCompatActivity {
         taskAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_export_tasks) {
-            TasksService.getInstance().writeTasksToFile(this);
-            taskAdapter.notifyDataSetChanged();
-        } else if (id == R.id.action_import_tasks) {
-            TasksService.getInstance().readTasksFromFile(this);
-            taskAdapter.notifyDataSetChanged();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+    // Menu do rozwoju w przyszłości - aktualnie zrezygnowano z realizacji
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//
+//        if (id == R.id.action_export_tasks) {
+//            TasksService.getInstance().writeTasksToFile(this);
+//            taskAdapter.notifyDataSetChanged();
+//        } else if (id == R.id.action_import_tasks) {
+//            TasksService.getInstance().readTasksFromFile(this);
+//            taskAdapter.notifyDataSetChanged();
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void initPrioritySpinner() {
         spSort = (Spinner) findViewById(R.id.spinnerSort);
@@ -168,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     PERMISSION_REQUEST_CODE);
-
         }
     }
 
@@ -182,9 +181,7 @@ public class MainActivity extends AppCompatActivity {
             if (grantResults.length == 2 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-
                 Toast.makeText(this, "Przyznano uprawnienia", Toast.LENGTH_SHORT).show();
-
             } else {
                 Toast.makeText(this, "Musisz przyznać uprawnienia aby używać tej aplikacji", Toast.LENGTH_SHORT).show();
                 finishAffinity();
@@ -238,13 +235,16 @@ class TasksNotificationReceiver extends BroadcastReceiver {
     private int numberOftasksToDo() {
         ArrayList<Task> tasks = TasksService.getInstance().getTasks();
         int toDo = 0;
-        Date nextDay = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(nextDay);
-        c.add(Calendar.DATE, 1);
-        nextDay = c.getTime();
+
+        Calendar todayMidnight = new GregorianCalendar();
+        todayMidnight.set(Calendar.HOUR_OF_DAY, 23);
+        todayMidnight.set(Calendar.MINUTE, 59);
+        todayMidnight.set(Calendar.SECOND, 59);
+        todayMidnight.set(Calendar.MILLISECOND, 0);
+        Date todayMidnightDate = todayMidnight.getTime();
+
         for (Task tsk : tasks) {
-            if ((tsk.getDeadline() != null) && (tsk.getDeadline().before(nextDay))) {
+            if ((tsk.getDeadline() != null) && (tsk.getDeadline().before(todayMidnightDate))) {
                 toDo++;
             }
         }

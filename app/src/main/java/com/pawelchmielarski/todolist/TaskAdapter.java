@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,11 +81,18 @@ public class TaskAdapter extends BaseAdapter {
                 notifyDataSetChanged();
             }
         });
+        btnDelete.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                TasksService.getInstance().deleteTask(task);
+                notifyDataSetChanged();
+                return true;
+            }
+        });
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TasksService.getInstance().deleteTask(task);
-                notifyDataSetChanged();
+                Toast.makeText(context, "Przytrzymaj dłużej, aby usunąć zadanie", Toast.LENGTH_SHORT).show();
             }
         });
         convertView.setOnClickListener(new View.OnClickListener() {
